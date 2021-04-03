@@ -1,0 +1,180 @@
+{% extends 'site/base.html' %}
+{% load static %}
+{% block content %}
+{% include 'partials/header.html' %}
+{% include 'partials/aside.html' %}
+  <!-- .app-main -->
+  <main class="app-main">
+    <!-- .wrapper -->
+    <div class="wrapper">
+        <!-- .page -->
+        <div class="page has-sidebar has-sidebar-expand-xl">
+          <!-- .page-inner -->
+          <div class="page-inner page-inner-fill">
+            <!-- .message -->
+            <div class="message">
+              <!-- message header -->
+              <div class="message-header">
+                <div class="d-flex">
+                  <a class="btn btn-light btn-icon" href="{% url 'add_ploting' %}"><i class="fa fa-flip-horizontal fa-share"></i></a>
+                </div>
+                <h4 class="message-title"> {{ ploting }}</h4>
+                <div class="message-header-actions">
+                  <!-- invite members -->
+                  <div class="dropdown d-inline-block">
+                    <button type="button" class="btn btn-light btn-icon" title="Invite members" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-plus"></i></button> <!-- .dropdown-menu -->
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-rich stop-propagation">
+                      <div class="dropdown-arrow"></div>
+                      <div class="dropdown-header"> Add members </div>
+                      <div class="form-group px-3 py-2 m-0">
+                        <input type="text" class="form-control" placeholder="e.g. @bent10" data-toggle="tribute" data-remote="assets/data/tribute.json" data-menu-container="#people-list" data-item-template="true" data-autofocus="true"> <small class="form-text text-muted">Search people by username or email address to invite them.</small>
+                      </div>
+                      <div id="people-list" class="tribute-inline stop-propagation"></div><a href="#" class="dropdown-footer">Invite member by link <i class="far fa-clone"></i></a>
+                    </div><!-- /.dropdown-menu -->
+                  </div><!-- /invite members -->
+                  <button type="button" class="btn btn-light btn-icon d-xl-none" data-toggle="sidebar"><i class="fa fa-angle-double-left"></i></button>
+                </div>
+              </div><!-- /message header -->
+              <!-- message body -->
+              <div class="message-body">
+                <!-- .card -->
+                <div class="card card-fluid mb-0">
+                  <!-- .conversations -->
+                  <div role="log" class="conversations">
+                    <!-- .conversation-list -->
+                    <ul class="conversation-list">
+                      <!-- .conversation-divider -->
+                      <li class="log-divider">
+                        <span><i class="far fa-fw fa-comment-alt"></i> plotted on <strong></strong> · {{ ploting.created }}</span>
+                      </li><!-- /.conversation-divider -->
+                      
+                      {% for r in reports %}
+                      <!-- .conversation-inbound -->
+                      <li class="conversation-outbound conversation-faux">
+                        <div class="conversation-message conversation-message-skip-avatar">
+                          <div class="conversation-message-text has-attachment">
+                            <div class="pswp-gallery">
+                              <!-- .card-figure -->
+                              <div class="card card-figure">
+                                <!-- .card-figure -->
+                                <figure class="figure">
+                                  <!-- .figure-img -->
+                                  <div class="figure-img figure-attachment">
+                                    <img src="{{ r.file.url }}" alt="Card image cap"> <a href="{{ r.file.url }}" class="img-link" data-size="600x450"><span class="tile tile-circle bg-danger"><span class="oi oi-eye"></span></span> <span class="img-caption d-none">Card image cap</span></a>
+                                  </div><!-- /.figure-img -->
+                                  <figcaption class="figure-caption">
+                                    <ul class="list-inline d-flex text-muted mb-0">
+                                      <li class="list-inline-item text-truncate mr-auto">{{ r.ploting.crop }} </li>
+                                      <li class="list-inline-item">
+                                        <button type="button" class="btn btn-reset" title="Download"><span class="oi oi-data-transfer-download"></span></button>
+                                      </li>
+                                    </ul>
+                                  </figcaption>
+                                </figure><!-- /.card-figure -->
+                              </div><!-- /.card-figure -->
+                            </div>
+                          </div>
+                          <div class="conversation-meta"> {{ user.username }} · {{ r.created }} </div>
+                        </div>
+                        <div class="conversation-actions dropdown">
+                          <button class="btn btn-sm btn-icon btn-light" data-toggle="dropdown"><i class="fa fa-fw fa-ellipsis-h"></i></button>
+                          <div class="dropdown-menu">
+                            <div class="dropdown-arrow ml-n1"></div><button type="button" class="dropdown-item">Copy text</button> <button type="button" class="dropdown-item">Edit</button> <button type="button" class="dropdown-item">Reply</button> <button type="button" class="dropdown-item">Remove</button>
+                          </div>
+                        </div>
+                      </li><!-- /.conversation-inbound -->
+                      {% endfor %}
+                      
+                      
+                      <!-- .conversation-inbound -->
+                      <li class="conversation-inbound">
+                        <div class="conversation-avatar">
+                          <a href="#" class="user-avatar"><img src="assets/images/avatars/uifaces11.jpg" alt=""> <span class="avatar-badge online"></span></a>
+                        </div>
+                        <div class="conversation-message">
+                          <div class="conversation-message-text">
+                            <div class="typing mr-1">
+                              <span class="dot"></span> <span class="dot"></span> <span class="dot"></span>
+                            </div><em>system is processing your inputs</em>
+                          </div>
+                        </div>
+                      </li><!-- /.conversation-inbound -->
+                    </ul><!-- /.conversation-list -->
+                  </div><!-- /.conversations -->
+                  
+                </div><!-- /.card -->
+              </div><!-- /message body -->
+              <!-- message publisher -->
+              <div class="message-publisher">
+                <!-- form -->
+                <form>
+                  <!-- .media -->
+                  <div class="media mb-1">
+                    <div class="btn btn-light btn-icon fileinput-button">
+                      <i class="fa fa-paperclip"></i> <input type="file" id="pm-attachment" name="pmAttachment[]" multiple>
+                    </div>
+                    <div class="media-body">
+                      <input type="text" class="form-control border-0 shadow-none" name="messageText" placeholder="Type a message">
+                    </div>
+                    <div>
+                      <button type="button" class="btn btn-light btn-icon"><i class="far fa-smile"></i></button> <button type="submit" class="btn btn-light btn-icon"><i class="far fa-paper-plane"></i></button>
+                    </div>
+                  </div><!-- /.media -->
+                </form><!-- /form -->
+              </div><!-- /message publisher -->
+            </div><!-- /.message -->
+          </div><!-- /.page-inner -->
+          <!-- .page-sidebar -->
+          <div class="page-sidebar">
+            <!-- .card -->
+            <div class="card card-reflow">
+              <div class="card-body">
+                <h4 class="card-title"> {% now "jS F Y H:i" %} </h4>
+                <div class="progress progress-sm rounded-0 mb-1">
+                  <div class="progress-bar bg-success w-75" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                
+              </div><!-- .card-body -->
+              <div class="card-body border-top">
+                <h4 class="card-title"> Activity </h4><!-- .timeline -->
+                <ul class="timeline timeline-dashed-line">
+                  <!-- .timeline-item -->
+                  <li class="timeline-item">
+                    <!-- .timeline-figure -->
+                    <div class="timeline-figure">
+                      <span class="tile tile-circle tile-xs bg-success"><i class="fa fa-check"></i></span>
+                    </div><!-- /.timeline-figure -->
+                    <!-- .timeline-body -->
+                    <div class="timeline-body">
+                      <h6 class="timeline-heading"> Planted </h6><span class="timeline-date">{{ ploting.created }}</span>
+                    </div><!-- /.timeline-body -->
+                  </li><!-- /.timeline-item -->
+                  
+                </ul><!-- /.timeline -->
+              </div><!-- /.card-body -->
+            </div><!-- /.card -->
+          </div><!-- /.page-sidebar -->
+        </div><!-- /.page -->
+      </div><!-- /.wrapper -->
+
+
+<footer class="app-footer">
+  <ul class="list-inline">
+    <li class="list-inline-item">
+      <a class="text-muted" href="#">Support</a>
+    </li>
+    <li class="list-inline-item">
+      <a class="text-muted" href="#">Help Center</a>
+    </li>
+    <li class="list-inline-item">
+      <a class="text-muted" href="#">Privacy</a>
+    </li>
+    <li class="list-inline-item">
+      <a class="text-muted" href="#">Terms of Service</a>
+    </li>
+  </ul>
+  <div class="copyright"> Copyright © 2020. All right reserved. </div>
+</footer><!-- /.app-footer -->
+<!-- /.wrapper -->
+</main><!-- /.app-main -->
+{% endblock %}
